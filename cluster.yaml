@@ -1,0 +1,11 @@
+apiVersion: ctlptl.dev/v1alpha1
+kind: Registry
+name: sample-webhook-registry
+port: 5353
+---
+apiVersion: ctlptl.dev/v1alpha1
+kind: Cluster
+name: kind-sample-webhook-dev
+product: kind
+kubernetesVersion: v1.25.0
+registry: sample-webhook-registry

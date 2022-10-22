@@ -67,10 +67,8 @@ spec:
         #   type: RuntimeDefault
       containers:
       - command:
-        - /manager
-        args:
-        - --leader-elect
-        image: controller:latest
+        - /sample-webhook
+        image: sample-webhook:dev
         name: manager
         securityContext:
           allowPrivilegeEscalation: false
