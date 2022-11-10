@@ -2,6 +2,7 @@ package hooks
 
 import (
 	"context"
+	"fmt"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -29,6 +30,15 @@ var _ admission.CustomDefaulter = &PodDefaulter{}
 
 // Default implements webhook.Defaulter so a webhook will be registered for the type
 func (*PodDefaulter) Default(ctx context.Context, obj runtime.Object) error {
+	pod, ok := obj.(*corev1.Pod)
+	if !ok {
+		return fmt.Errorf("unknown newObj type %T", obj)
+	}
+	for i, c := range pod.Spec.Containers {
+		if c.ImagePullPolicy != corev1.PullAlways {
+			pod.Spec.Containers[i].ImagePullPolicy = corev1.PullAlways
+		}
+	}
 	return nil
 }
 

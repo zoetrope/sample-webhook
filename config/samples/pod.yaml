@@ -5,7 +5,5 @@ metadata:
 spec:
   containers:
     - name: sample
-      image: busybox:latest
-      command:
-        - sleep
-        - Infinity
+      image: quay.io/cybozu/ubuntu:20.04
+      command: ["/usr/local/bin/pause"]

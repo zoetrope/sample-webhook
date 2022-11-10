@@ -78,6 +78,27 @@ webhooks:
     service:
       name: webhook-service
       namespace: system
+      path: /validate-apps-v1-deployment
+  failurePolicy: Fail
+  name: vdeployment.kb.io
+  rules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - deployments
+    - deployments/scale
+  sideEffects: None
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: webhook-service
+      namespace: system
       path: /validate--v1-pod
   failurePolicy: Fail
   name: vpod.kb.io

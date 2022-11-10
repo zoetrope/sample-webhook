@@ -20,6 +20,8 @@ import (
 	"flag"
 	"os"
 
+	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+
 	"github.com/zoetrope/sample-webhook/hooks"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -90,14 +92,24 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = hooks.SetupWebhookWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create webhook", "webhook", "Pod")
-		os.Exit(1)
-	}
 	if err = (&samplev1.SampleResource{}).SetupWebhookWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create webhook", "webhook", "SampleResource")
 		os.Exit(1)
 	}
+
+	if err = hooks.SetupWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "Pod")
+		os.Exit(1)
+	}
+
+	dec, err := admission.NewDecoder(scheme)
+	if err != nil {
+		setupLog.Error(err, "unable to create decoder")
+		os.Exit(1)
+	}
+	wh := mgr.GetWebhookServer()
+	wh.Register("/validate-apps-v1-deployment", hooks.NewDeploymentValidator(mgr.GetClient(), dec))
+
 	//+kubebuilder:scaffold:builder
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
