@@ -1,0 +1,12 @@
+apiVersion: sample.zoetrope.github.io/v1
+kind: SampleResource
+metadata:
+  labels:
+    app.kubernetes.io/name: sampleresource
+    app.kubernetes.io/instance: sampleresource-sample
+    app.kubernetes.io/part-of: sample-webhook
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: sample-webhook
+  name: sampleresource-sample
+spec:
+  # TODO(user): Add fields here
