@@ -4,10 +4,9 @@ import (
 	"context"
 	"net/http"
 
+	appsv1 "k8s.io/api/apps/v1"
 	autoscalingv1 "k8s.io/api/autoscaling/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
-
-	appsv1 "k8s.io/api/apps/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
@@ -24,12 +23,18 @@ type deploymentValidator struct {
 }
 
 // NewDeploymentValidator creates a webhook handler for Deployment.
-func NewDeploymentValidator(c client.Client, dec *admission.Decoder) http.Handler {
+func NewDeploymentValidator(c client.Client) http.Handler {
 	v := &deploymentValidator{
-		client:  c,
-		decoder: dec,
+		client: c,
 	}
 	return &webhook.Admission{Handler: v}
+}
+
+var _ admission.DecoderInjector = &deploymentValidator{}
+
+func (v *deploymentValidator) InjectDecoder(d *admission.Decoder) error {
+	v.decoder = d
+	return nil
 }
 
 func (v *deploymentValidator) Handle(ctx context.Context, req admission.Request) admission.Response {
