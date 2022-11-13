@@ -18,6 +18,10 @@ spec:
           readOnly: true
       volumes:
       - name: cert
-        secret:
+        projected:
           defaultMode: 420
-          secretName: webhook-server-cert
+          sources:
+            - secret:
+                name: webhook-server-cert
+            - secret:
+                name: webhook-client-cert

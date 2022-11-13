@@ -99,6 +99,7 @@ func main() {
 	}
 
 	wh := mgr.GetWebhookServer()
+	wh.ClientCAName = "clientca.pem"
 	wh.Register("/validate-apps-v1-deployment", hooks.NewDeploymentValidator(mgr.GetClient()))
 
 	//+kubebuilder:scaffold:builder

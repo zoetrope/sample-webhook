@@ -24,3 +24,10 @@ webhooks:
           operator: NotIn
           values:
             - sample-webhook-system
+  - name: vdeployment.kb.io
+    namespaceSelector:
+      matchExpressions:
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - sample-webhook-system

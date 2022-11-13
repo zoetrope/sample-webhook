@@ -46,6 +46,12 @@ manifests: controller-gen ## Generate WebhookConfiguration, ClusterRole and Cust
 generate: controller-gen ## Generate code containing DeepCopy, DeepCopyInto, and DeepCopyObject method implementations.
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
 
+.PHONY: certs
+certs:
+	cfssl gencert -initca ./certs/ca-csr.json | cfssljson -bare ./certs/clientca
+	cfssl genkey ./certs/client.json | cfssljson -bare ./certs/client
+	cfssl sign -ca ./certs/clientca.pem -ca-key ./certs/clientca-key.pem -config ./certs/ca-config.json ./certs/client.csr | cfssljson -bare ./certs/client
+
 .PHONY: fmt
 fmt: ## Run go fmt against code.
 	go fmt ./...
@@ -120,10 +126,12 @@ undeploy: ## Undeploy controller from the K8s cluster specified in ~/.kube/confi
 	$(KUSTOMIZE) build config/default | kubectl delete --ignore-not-found=$(ignore-not-found) -f -
 
 .PHONY: start
-start:
+start: certs
 	ctlptl apply -f ./cluster.yaml
 	kubectl apply -f https://github.com/jetstack/cert-manager/releases/latest/download/cert-manager.yaml
 	kubectl -n cert-manager wait --for=condition=available --timeout=180s --all deployments
+	kubectl create ns sample-webhook-system
+	cd certs && kubectl create secret generic webhook-client-cert -n sample-webhook-system --from-file=clientca.pem
 
 .PHONY: stop
 stop:

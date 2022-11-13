@@ -1,0 +1,7 @@
+{
+  "CN": "Sample Webhook Client CA",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}
