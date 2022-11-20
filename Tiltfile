@@ -27,7 +27,3 @@ docker_build_with_restart(
         sync('./bin/sample-webhook', '/sample-webhook'),
     ]
 )
-
-local_resource(
-    'Sample', 'kubectl apply -f ./config/samples/pod.yaml',
-    deps=["./config/samples/pod.yaml"])
