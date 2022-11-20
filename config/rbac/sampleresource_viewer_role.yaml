@@ -1,0 +1,27 @@
+# permissions for end users to view sampleresources.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: sampleresource-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: sample-webhook
+    app.kubernetes.io/part-of: sample-webhook
+    app.kubernetes.io/managed-by: kustomize
+  name: sampleresource-viewer-role
+rules:
+- apiGroups:
+  - sample.zoetrope.github.io
+  resources:
+  - sampleresources
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - sample.zoetrope.github.io
+  resources:
+  - sampleresources/status
+  verbs:
+  - get

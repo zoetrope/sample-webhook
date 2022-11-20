@@ -1,0 +1,11 @@
+{
+  "hosts": [
+    "sample-webhook-webhook-service.sample-webhook-system.svc",
+    "sample-webhook-webhook-service.sample-webhook-system.svc.cluster.local"
+  ],
+  "CN": "sample-webhook-webhook-service.sample-webhook-system.svc",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}

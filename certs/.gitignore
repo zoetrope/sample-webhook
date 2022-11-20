@@ -1,0 +1,6 @@
+client.csr
+client.pem
+client-key.pem
+clientca.csr
+clientca.pem
+clientca-key.pem

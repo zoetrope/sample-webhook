@@ -1,0 +1,38 @@
+apiVersion: ctlptl.dev/v1alpha1
+kind: Registry
+name: sample-webhook-registry
+port: 5353
+---
+apiVersion: ctlptl.dev/v1alpha1
+kind: Cluster
+product: kind
+kubernetesVersion: v1.25.0
+registry: sample-webhook-registry
+kindV1Alpha4Cluster:
+  name: sample-webhook-dev
+  nodes:
+    - role: control-plane
+      kubeadmConfigPatches:
+        - |
+          kind: ClusterConfiguration
+          apiServer:
+              extraArgs:
+                admission-control-config-file: /etc/cluster/admissionconfig.yaml
+              extraVolumes:
+                - name: cluster
+                  hostPath: /etc/cluster
+                  mountPath: /etc/cluster
+                  readOnly: true
+                  pathType: "DirectoryOrCreate"
+                - name: certs
+                  hostPath: /etc/certs
+                  mountPath: /etc/certs
+                  readOnly: true
+                  pathType: "DirectoryOrCreate"
+      extraMounts:
+        - hostPath: ./cluster
+          containerPath: /etc/cluster
+          readOnly: true
+        - hostPath: ./certs
+          containerPath: /etc/certs
+          readOnly: true

@@ -1,0 +1,19 @@
+domain: zoetrope.github.io
+layout:
+- go.kubebuilder.io/v3
+projectName: sample-webhook
+repo: github.com/zoetrope/sample-webhook
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: zoetrope.github.io
+  group: sample
+  kind: SampleResource
+  path: github.com/zoetrope/sample-webhook/api/v1
+  version: v1
+  webhooks:
+    defaulting: true
+    validation: true
+    webhookVersion: v1
+version: "3"
