@@ -93,14 +93,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = hooks.SetupWebhookWithManager(mgr); err != nil {
+	if err = hooks.SetupPodWebhookWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create webhook", "webhook", "Pod")
 		os.Exit(1)
 	}
 
+	if err = hooks.SetupNamespaceWebhookWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create webhook", "webhook", "Namespace")
+		os.Exit(1)
+	}
+
 	wh := mgr.GetWebhookServer()
+	wh.Register("/validate-apps-v1-deployment", hooks.NewDeploymentValidator())
+
 	wh.ClientCAName = "clientca.pem"
-	wh.Register("/validate-apps-v1-deployment", hooks.NewDeploymentValidator(mgr.GetClient()))
 
 	//+kubebuilder:scaffold:builder
 

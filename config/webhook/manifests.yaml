@@ -99,17 +99,16 @@ webhooks:
     service:
       name: webhook-service
       namespace: system
-      path: /validate--v1-pod
+      path: /validate--v1-namespace
   failurePolicy: Fail
-  name: vpod.kb.io
+  name: vnamespace.kb.io
   rules:
   - apiGroups:
     - ""
     apiVersions:
     - v1
     operations:
-    - CREATE
-    - UPDATE
+    - DELETE
     resources:
-    - pods
+    - namespaces
   sideEffects: None

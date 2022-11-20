@@ -35,10 +35,13 @@ spec:
           spec:
             description: SampleResourceSpec defines the desired state of SampleResource
             properties:
-              foo:
-                description: Foo is an example field of SampleResource. Edit sampleresource_types.go
-                  to remove/update
+              image:
                 type: string
+              replicas:
+                format: int32
+                type: integer
+            required:
+            - image
             type: object
           status:
             description: SampleResourceStatus defines the observed state of SampleResource

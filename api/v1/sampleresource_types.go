@@ -9,11 +9,11 @@ import (
 
 // SampleResourceSpec defines the desired state of SampleResource
 type SampleResourceSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// +kubebuilder:validation:Required
+	Image string `json:"image"`
 
-	// Foo is an example field of SampleResource. Edit sampleresource_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// +optional
+	Replicas *int32 `json:"replicas,omitempty"`
 }
 
 // SampleResourceStatus defines the observed state of SampleResource
