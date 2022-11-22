@@ -4,6 +4,8 @@ CloudNative Days Tokyo 2022のセッション「Kubernetes Admission Webhook Dee
 
 - セッション情報
     - https://event.cloudnativedays.jp/cndt2022/talks/1579
+- スライド
+    - https://speakerdeck.com/zoetrope/admissionwebhookdeepdive-cndt2022
 - 補足記事
     - https://zenn.dev/zoetro/articles/admission-webhook-deep-dive
 
